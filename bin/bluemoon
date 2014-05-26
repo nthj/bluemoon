@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+%w[bluemoon json plist].each do |dependency|
+  begin
+    require dependency
+  rescue LoadError => e
+    abort "Unabled to find gem '#{dependency}'. Please run `gem install #{dependency}` to continue."
+  end
+end
+
+case ARGV.shift
+when 'add'     then Bluemoon::Area.add
+when 'bootup'  then Bluemoon.bootup
+when 'debug'   then Bluemoon::Location.debug
+when 'list'    then Bluemoon::Area.list
+when 'open'    then Bluemoon::Location.current.open
+when 'remove'  then Bluemoon::Area.remove(ARGV.shift)
+when 'run'     then Bluemoon.run
+else                Bluemoon::Help.show
+end
